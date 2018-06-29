@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Title: hurl
 ## Author: moh
-## Version: 1.0
+## Version: 1.1
 
 libs\module.lua
 libs\base64.lua

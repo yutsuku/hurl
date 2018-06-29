@@ -112,13 +112,11 @@ function addMessage(self, text, ...)
     hooks[self].AddMessage(self, text, ...)
 end
 
-function onHyperlinkClick()
+function onHyperlinkClick(...)
     local uri = _G.arg1
-    local link = _G.arg2
 
     if not string.find(uri, URL_PATTERN) then
-        hooks[this].OnHyperlinkClick()
-        return
+        return hooks[this].OnHyperlinkClick(...)
     end
 	
     clickedUrl = hurl_to_str(uri)
