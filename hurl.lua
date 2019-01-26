@@ -92,7 +92,7 @@ function Hyperlink(uri, text, color)
     return link
 end
 
-function hurl_to_str(hurl)
+function M.hurl_to_str(hurl)
 	hurl = string.sub(hurl, 7)
 	hurl = string.sub(hurl, 1, -2)
 	hurl = base64.decode(hurl)
@@ -169,3 +169,22 @@ _G.StaticPopupDialogs[DIALOG_NAME] = {
         this:GetParent():Hide()
     end,
 }
+
+-- WIM support
+if _G.WIM then
+_G.WIM.RegisterStringModifier(function(str)
+	--[[for url in string.gmatch(str, '(%[hurl:%S+%])') do
+        str = string.gsub(str, url, hurl_to_str(url))
+	end]] -- this for some reason bugs out and repeats itself while repeating itself...
+    
+    local results
+    repeat
+        str, results = string.gsub(str, '(%[hurl:%S+%])', function(url)
+            local url = hurl_to_str(url):gsub('%%', '%%%%')
+            return ' |cff'..WIM.RGBPercentToHex(WIM.db.displayColors.webAddress.r, WIM.db.displayColors.webAddress.g, WIM.db.displayColors.webAddress.b)..'|Hwim_url:'..url..'|h['..url..']|h|r';
+        end, 1)
+    until results == 0
+
+    return str
+end)
+end
