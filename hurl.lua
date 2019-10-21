@@ -124,13 +124,15 @@ function onHyperlinkClick(...)
 end
 
 for i = 1, _G.NUM_CHAT_WINDOWS do
-    local chatFrame = _G['ChatFrame' .. i]
-	hooks[chatFrame] = hooks[chatFrame] or {}
-    hooks[chatFrame].AddMessage = chatFrame.AddMessage
-	chatFrame.AddMessage = addMessage
+	if i ~= 2 then -- skip combat log
+		local chatFrame = _G['ChatFrame' .. i]
+		hooks[chatFrame] = hooks[chatFrame] or {}
+		hooks[chatFrame].AddMessage = chatFrame.AddMessage
+		chatFrame.AddMessage = addMessage
 
-	hooks[chatFrame].OnHyperlinkClick = chatFrame:GetScript('OnHyperlinkClick')
-	chatFrame:SetScript('OnHyperlinkClick', onHyperlinkClick)
+		hooks[chatFrame].OnHyperlinkClick = chatFrame:GetScript('OnHyperlinkClick')
+		chatFrame:SetScript('OnHyperlinkClick', onHyperlinkClick)
+	end
 end
 
 _G.StaticPopupDialogs[DIALOG_NAME] = {
